@@ -1,0 +1,39 @@
+{
+    "UsuIdentificador": {
+        "RolIdentificador": null,
+        "PerCedula": null,
+        "PerNombre": null,
+        "PerTelefono": null,
+        "PerDireccion": null,
+        "UsuNumObjRep": null,
+        "UsuNumObjRec": null,
+        "UsuNumbObjSub": null,
+        "UsuCorreo": null,
+        "objetos":{
+            "ObjIdentificador": {
+                "TipIdentificador": null,
+                "UbiIdentificador": null,
+                "ObjFechaReg": null,
+                "ObjFechaDev": null,
+                "ObjEstado": null
+            }
+        }
+    }
+}
+
+
+ObjEstado
+SD-Sin dueño
+AR-archivado
+ES-en subasta
+SB-subastado
+EN-entregado,
+NE-no encontrado,
+EL-eliminado
+
+RolIdentificador
+1-Estudiante
+2-Docente
+3-Administrativo
+4-Contratista
+5-Otros
