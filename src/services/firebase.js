@@ -22,12 +22,6 @@ class FirebaseService {
     firebase.auth().onAuthStateChanged(user => {then(user);});
   }
 
-  getUserByUid(id){
-    this.database.ref().child('records').child(userUid).on(
-      'value', (snapshot) => {then(snapshot.val())}
-    );
-  }
-
   handleAuth() {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider)
@@ -42,6 +36,12 @@ class FirebaseService {
   }
 
   /* Getters */
+  getUserByUid(userUid, then){
+    this.database.ref().child('records').child(userUid).on(
+      'value', (snapshot) => {then(snapshot.val())}
+    );
+  }
+
   getUserRecords(userUid, then) {
     this.database.ref().child('records').child(userUid).on(
       'value', (snapshot) => {then(snapshot.val())}
