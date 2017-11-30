@@ -14,7 +14,7 @@ import AppBar from 'material-ui/AppBar';
 import Avatar from 'material-ui/Avatar';
 import Dialog from 'material-ui/Dialog';
 
-import DataInput from './components/DataInput';
+import ObjectDataInput from './components/ObjectDataInput';
 import RecordList from './components/RecordList';
 
 import _ from 'lodash';
@@ -125,6 +125,7 @@ class App extends Component {
       user: null,
       dataInputOpen: false,
       existentUser: false
+      data: null
     };
   }
 
@@ -144,6 +145,13 @@ class App extends Component {
        () => {this.userExists()}
      )
    );
+  }
+
+  handleObjectDataInputChange(data){
+    this.setState({
+      dataInputOpen: !this.state.dataInputOpen,
+      data: data
+    }, () => {console.log(this.state.data?"Ok":"Cancel")})
   }
 
   loginButton(){
@@ -181,8 +189,8 @@ class App extends Component {
           {this.state.user?(
             <div>
               <p>{this.state.user.email}</p>
-              <DataInput
-                onClose={() => {this.setState({dataInputOpen: !this.state.dataInputOpen})}}
+              <ObjectDataInput
+                onChange={(data) => {this.handleObjectDataInputChange(data)}}
                 visible={this.state.dataInputOpen}
                 user={this.state.user}
               />
