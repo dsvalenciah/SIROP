@@ -22,7 +22,7 @@ class FirebaseService {
     firebase.auth().onAuthStateChanged(user => {then(user);});
   }
 
-  getUserByUid(id){
+  getUserByUid(userUid, then){
     this.database.ref().child('records').child(userUid).on(
       'value', (snapshot) => {then(snapshot.val())}
     );

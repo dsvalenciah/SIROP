@@ -219,4 +219,3 @@ class DataInput extends Component {
 }
 
 export default DataInput;
-
