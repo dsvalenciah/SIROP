@@ -8,9 +8,11 @@ import CircularProgress from 'material-ui/CircularProgress';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
+import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import Avatar from 'material-ui/Avatar';
+import Dialog from 'material-ui/Dialog';
 
 import ObjectDataInput from './components/ObjectDataInput';
 import RecordList from './components/RecordList';
@@ -58,6 +60,22 @@ class Login extends Component {
   };
 }
 
+class userInput extends Component {
+  render() {
+    return(
+      <Dialog
+        title="Información de registro"
+      >
+        <TextField
+            hintText="Número celular"
+            floatingLabelText="celular"
+            fullWidth={true}
+        />
+      </Dialog>
+     )
+   };
+}
+
 const muiTheme = getMuiTheme({
   raisedButton: {
     color: grey900,
@@ -98,6 +116,7 @@ const muiTheme = getMuiTheme({
   }
 });
 
+
 class App extends Component {
   constructor() {
     super();
@@ -105,16 +124,27 @@ class App extends Component {
     this.state = {
       user: null,
       dataInputOpen: false,
+      existentUser: false
       data: null
     };
   }
 
+
+  userExists() {
+   if (this.state.user !== null)
+    var temporal = this.firebaseService.getUserByUid(this.state.user.uid)
+    if (temporal !== undefined) {
+     this.setState({existentUser: true})
+    }
+  }
+
   componentWillMount(){
-    this.firebaseService.getUser(
-      (user) => this.setState(
-        {user: user}
-      )
-    );
+   this.firebaseService.getUser(
+     (user) => this.setState(
+       {user: user},
+       () => {this.userExists()}
+     )
+   );
   }
 
   handleObjectDataInputChange(data){
