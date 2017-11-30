@@ -42,8 +42,8 @@ class FirebaseService {
     );
   }
 
-  getUserRecords(userUid, then) {
-    this.database.ref().child('records').child(userUid).on(
+  getUserObjects(userUid, then) {
+    this.database.ref().child(userUid + '/objects').on(
       'value', (snapshot) => {then(snapshot.val())}
     );
   }
@@ -72,6 +72,14 @@ class FirebaseService {
     this.database.ref(userUid + '/').set(user);
   }
 
+  setUserObject(userUid, objectUid, object) {
+    this.database.ref(userUid + '/objects/' + objectUid + '/').set(object);
+  }
+
+  updateUserObject(userUid, objectUid, object) {
+    this.database.ref(userUid + '/objects/' + objectUid + '/').update(object);
+  }
+
   setUserRecord(userUid, recordUid, record) {
     this.database.ref(
       'records/' + userUid + '/' + recordUid + '/'
@@ -85,10 +93,8 @@ class FirebaseService {
   }
 
   /* Removers */
-  deleteUserRecord(userUid, recordUid) {
-    this.database.ref(
-      'records/' + userUid + '/' + recordUid + '/'
-    ).remove();
+  deleteUserObject(userUid, objectUid) {
+    this.database.ref(userUid + '/objects/' + objectUid + '/').remove();
   }
 }
 

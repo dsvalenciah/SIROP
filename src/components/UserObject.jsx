@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import IconButton from 'material-ui/IconButton';
 import SvgIcon from 'material-ui/SvgIcon';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
-import {brown300, blueGrey300} from 'material-ui/styles/colors';
+import {blueGrey300} from 'material-ui/styles/colors';
 
-import ObjectDataInput from './ObjectDataInput';
+import ObjectInput from './ObjectInput';
 
-class Record extends Component {
+class UserObject extends Component {
   constructor() {
     super();
     this.state = {
@@ -20,20 +20,20 @@ class Record extends Component {
     this.setState({circleActive: !circleActiveTemp});
   }
 
-  recordModify(record) {
-    this.props.onModify(record);
+  handleObjectInputChange(object) {
+    this.props.onModify(object);
     this.changeCircleActive();
   }
 
   render () {
     return (
-      <TableRow style={{background: this.props.record.complete?blueGrey300:brown300}}>
-        <TableRowColumn>{this.props.record.name}</TableRowColumn>
-        <TableRowColumn>{this.props.record.date}</TableRowColumn>
+      <TableRow style={{background: blueGrey300}}>
+        <TableRowColumn>{this.props.object.objectState}</TableRowColumn>
+        <TableRowColumn>{this.props.object.dateRegistred}</TableRowColumn>
         <TableRowColumn>
           <div>
             <IconButton
-              onClick={() => {this.props.onDelete(this.props.record.uid)}}
+              onClick={() => {this.props.onDelete(this.props.object.uid)}}
               style={{float: 'right'}}
             >
               <SvgIcon>
@@ -49,11 +49,11 @@ class Record extends Component {
               <SvgIcon>
                 <path d="M17.75 7L14 3.25l-10 10V17h3.75l10-10zm2.96-2.96c.39-.39.39-1.02 0-1.41L18.37.29c-.39-.39-1.02-.39-1.41 0L15 2.25 18.75 6l1.96-1.96z" /><path fillOpacity=".36" d="M0 20h24v4H0z" />
               </SvgIcon>
-              <ObjectDataInput
-                record={this.props.record}
-                visible={this.state.circleActive}
-                onModify={(record) => {this.recordModify(record)}}
+              <ObjectInput
                 user={this.props.user}
+                object={this.props.object}
+                open={this.state.circleActive}
+                onChange={(object) => {this.handleObjectInputChange(object)}}
               />
             </IconButton>
           </div>
@@ -63,4 +63,4 @@ class Record extends Component {
   }
 }
 
-export default Record;
+export default UserObject;

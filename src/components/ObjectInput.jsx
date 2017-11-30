@@ -7,7 +7,6 @@ import {
   blueGrey500, blueGrey300, blueGrey400
 } from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
@@ -15,10 +14,6 @@ import Paper from 'material-ui/Paper';
 import _ from 'lodash';
 
 import uuidv4 from 'uuid/v4';
-
-import FirebaseService from '../services/firebase';
-
-import RecordSupport from './RecordSupport'
 
 class ObjectInput extends Component {
   constructor(props) {
@@ -31,9 +26,10 @@ class ObjectInput extends Component {
     this.state = {
       file: null,
       dateDevolution: null,
-      objectState: null,
-      campus: null,
-      block: null,
+      objectState: "SD",
+      campus: "N",
+      block: "A",
+      uid: null,
       object: null,
       classRoom: null,
       phone: null,
@@ -50,10 +46,23 @@ class ObjectInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.record !== undefined) {
-
+    if (this.props.object !== undefined) {
+      this.setState({
+        block: this.props.object.block,
+        campus: this.props.object.campus,
+        classRoom: this.props.object.classRoom,
+        dateRegistred: this.props.object.dateRegistred,
+        dateDevolution: this.props.object.dateDevolution,
+        direction: this.props.object.direction,
+        object: this.props.object.object,
+        objectState: this.props.object.objectState,
+        phone: this.props.object.phone,
+        description: this.props.object.description,
+        file: this.props.object.file,
+        uid: this.props.object.uid,
+      });
     } else {
-
+      this.setState({uid: uuidv4()});
     }
   }
 
@@ -77,17 +86,40 @@ class ObjectInput extends Component {
 
   handleFinish(response) {
     let data = {
-      block: this.state.block,
-      campus: this.state.campus,
-      classRoom: this.state.classRoom,
+      block: this.state.block !== undefined?(
+        this.state.block
+        ) : (null),
+      campus: this.state.campus !== undefined?(
+        this.state.campus
+        ) : (null),
+      classRoom: this.state.classRoom !== undefined?(
+        this.state.classRoom
+        ) : (null),
       dateRegistred: this.getCurrentDate(),
-      dateDevolution: this.state.dateDevolution,
-      direction: this.state.direction,
-      object: this.state.object,
-      objectState: this.state.objectState,
-      phone: this.state.phone,
-      description: this.state.description,
-      file: this.state.file,
+      dateDevolution: this.state.dateDevolution !== undefined?(
+        this.state.dateDevolution
+        ) : (null),
+      direction: this.state.direction !== undefined?(
+        this.state.direction
+        ) : (null),
+      object: this.state.object !== undefined?(
+        this.state.object
+        ) : (null),
+      objectState: this.state.objectState !== undefined?(
+        this.state.objectState
+        ) : (null),
+      phone: this.state.phone !== undefined?(
+        this.state.phone
+        ) : (null),
+      description: this.state.description !== undefined?(
+        this.state.description
+        ) : (null),
+      file: this.state.file !== undefined?(
+        this.state.file
+        ) : (null),
+      uid: this.state.uid !== undefined?(
+        this.state.uid
+        ) : (null),
     };
     this.props.onChange(data)
   };
@@ -113,7 +145,7 @@ class ObjectInput extends Component {
 
   handleObjectFieldChange(event) {
     this.setState(
-      {object: event},
+      {object: event.target.value},
       () => {this.setState({
         objectFieldError: this.objectFieldController(this.state.object)
       })}
@@ -121,7 +153,7 @@ class ObjectInput extends Component {
   }
   handleClassroomFieldChange(event) {
     this.setState(
-      {classRoom: event},
+      {classRoom: event.target.value},
       () => {this.setState({
         classRoomFieldError: this.classRoomFieldController(this.state.classRoom)
       })}
@@ -129,7 +161,7 @@ class ObjectInput extends Component {
   }
   handlePhoneFieldChange(event) {
     this.setState(
-      {phone: event},
+      {phone: event.target.value},
       () => {this.setState({
         phoneFieldError: this.phoneFieldController(this.state.phone)
       })}
@@ -137,7 +169,7 @@ class ObjectInput extends Component {
   }
   handleDirectionFieldChange(event) {
     this.setState(
-      {direction: event},
+      {direction: event.target.value},
       () => {this.setState({
         directionFieldError: this.directionFieldController(this.state.direction)
       })}
@@ -145,7 +177,7 @@ class ObjectInput extends Component {
   }
   handleEmailFieldChange(event) {
     this.setState(
-      {email: event},
+      {email: event.target.value},
       () => {this.setState({
         emailFieldError: this.emailFieldController(this.state.email)
       })}
@@ -153,7 +185,7 @@ class ObjectInput extends Component {
   }
   handleDescriptionFieldChange(event) {
     this.setState(
-      {description: event},
+      {description: event.target.value},
       () => {this.setState({
         descriptionFieldError: this.descriptionFieldController(this.state.email)
       })}
@@ -161,7 +193,8 @@ class ObjectInput extends Component {
   }
 
   handleFileChange(file) {
-    this.setState({file: file});
+    console.log(file);
+    this.setState({file: file.name});
   }
 
   render() {
@@ -211,7 +244,7 @@ class ObjectInput extends Component {
                   }}
                 >Estado del objeto:</p>
                 <DropDownMenu
-                  value={"SD"}
+                  value={this.state.objectState}
                   onChange={
                     (event, index, value) => {
                       this.setState({objectState: value})
@@ -224,7 +257,7 @@ class ObjectInput extends Component {
                   <MenuItem value={"AR"} primaryText="Archivado"/>
                   <MenuItem value={"ES"} primaryText="En subasta"/>
                   <MenuItem value={"SB"} primaryText="Subastado"/>
-                  <MenuItem value={"EN"} primaryText="Entregado,"/>
+                  <MenuItem value={"EN"} primaryText="Entregado"/>
                   <MenuItem value={"NE"} primaryText="No encontrado,"/>
                   <MenuItem value={"EL"} primaryText="Eliminado"/>
                 </DropDownMenu>
@@ -233,6 +266,7 @@ class ObjectInput extends Component {
                 hintText="Escriba aquí el tipo de objeto"
                 floatingLabelText="Tipo de objeto"
                 fullWidth={true}
+                defaultValue={this.state.object}
                 errorText={this.state.objectFieldError}
                 onChange={this.handleObjectFieldChange.bind(this)}
               />
@@ -240,6 +274,7 @@ class ObjectInput extends Component {
                 hintText="Escriba aquí la descripcion del objeto"
                 floatingLabelText="Descripcion del objeto"
                 fullWidth={true}
+                defaultValue={this.state.description}
                 errorText={this.state.descriptionFieldError}
                 onChange={this.handleDescriptionFieldChange.bind(this)}
                 multiLine={true}
@@ -282,7 +317,7 @@ class ObjectInput extends Component {
                   }}
                 >Campus:</p>
                 <DropDownMenu
-                  value={"C"}
+                  value={this.state.campus}
                   onChange={
                     (event, index, value) => {
                       this.setState({campus: value})
@@ -304,7 +339,7 @@ class ObjectInput extends Component {
                   }}
                 >Bloque:</p>
                   <DropDownMenu
-                    value={"C"}
+                    value={this.state.block}
                     onChange={
                       (event, index, value) => {
                         this.setState({block: value})
@@ -323,6 +358,7 @@ class ObjectInput extends Component {
                 hintText="Escriba aquí el tipo de objeto"
                 floatingLabelText="Aula"
                 fullWidth={true}
+                defaultValue={this.state.classRoom}
                 errorText={this.state.classRoomFieldError}
                 onChange={this.handleClassroomFieldChange.bind(this)}
               />
@@ -339,7 +375,7 @@ class ObjectInput extends Component {
                 hintText="Escriba aquí el telefono"
                 floatingLabelText="Telefono"
                 fullWidth={true}
-                defaultValue={this.props.user.phoneNumber}
+                defaultValue={this.state.phone}
                 errorText={this.state.phoneFieldError}
                 onChange={this.handlePhoneFieldChange.bind(this)}
               />
@@ -347,6 +383,7 @@ class ObjectInput extends Component {
                 hintText="Escriba aquí la dirección"
                 floatingLabelText="Dirección"
                 fullWidth={true}
+                defaultValue={this.state.direction}
                 errorText={this.state.directionFieldError}
                 onChange={this.handleDirectionFieldChange.bind(this)}
               />

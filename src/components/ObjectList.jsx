@@ -11,9 +11,9 @@ import {
 
 import _ from 'lodash';
 
-import Record from './Record';
+import UserObject from './UserObject';
 
-class RecordList extends Component {
+class ObjectList extends Component {
   render () {
     return (
       <div style={{padding: 25}}>
@@ -21,19 +21,19 @@ class RecordList extends Component {
           <Table>
             <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
               <TableRow>
-                <TableHeaderColumn><b><big>Nombre</big></b></TableHeaderColumn>
+                <TableHeaderColumn><b><big>Estado</big></b></TableHeaderColumn>
                 <TableHeaderColumn><b><big>Fecha y hora</big></b></TableHeaderColumn>
                 <TableHeaderColumn></TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {_.map(this.props.records, (r, id) => (
-                  <Record
-                    onDelete={this.props.onDelete.bind(this)}
+              {_.map(this.props.objects, (o, id) => (
+                  <UserObject
                     key={id}
-                    record={r}
+                    object={o}
                     user={this.props.user}
                     onModify={this.props.onModify.bind(this)}
+                    onDelete={this.props.onDelete.bind(this)}
                   />
               ))}
             </TableBody>
@@ -44,4 +44,4 @@ class RecordList extends Component {
   }
 }
 
-export default RecordList;
+export default ObjectList;
