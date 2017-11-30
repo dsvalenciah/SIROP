@@ -20,7 +20,7 @@ import FirebaseService from '../services/firebase';
 
 import RecordSupport from './RecordSupport'
 
-class ObjectDataInput extends Component {
+class ObjectInput extends Component {
   constructor(props) {
     super(props);
     this.abc = [
@@ -181,7 +181,7 @@ class ObjectDataInput extends Component {
         title="Reporte de no conformidad"
         actions={actions}
         modal={false}
-        open={this.props.visible}
+        open={this.props.open}
         onRequestClose={this.handleClose}
         autoScrollBodyContent={true}
         bodyStyle={{background: blueGrey300}}
@@ -366,5 +366,5 @@ class ObjectDataInput extends Component {
   }
 }
 
-export default ObjectDataInput;
+export default ObjectInput;
 
